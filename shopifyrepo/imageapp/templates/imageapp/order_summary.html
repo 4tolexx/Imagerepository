@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main>
+    <div class="container">
+
+    <div class="table-responsive text-nowrap">
+    <h2>Order Summary</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Item title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Item Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order_photo in object.photos.all %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ order_photo.photo.description }}</td>
+            <td>{{ order_photo.photo.price }}</td>
+            <td>
+                <a href="{% url 'imageapp:remove-single-item-from-cart' order_photo.photo.slug %}"><i class="fa fa-minus mr-2"></i></a>
+                {{ order_photo.quantity }}
+                <a href="{% url 'imageapp:add-to-cart' order_photo.photo.slug %}"><i class="fa fa-plus ml-2"></i></a>
+            </td>
+            <td>
+            {% if order_photo.photo.discount_price %}
+                ${{ order_photo.get_total_discount_item_price }}
+                <span class="badge badge-primary">Saving ${{ order_photo.get_amount_saved }}</span>
+            {% else %}
+                ${{ order_photo.get_total_item_price }}
+            {% endif %}
+            <a style='color: red;' href="{% url 'imageapp:remove-from-cart' order_photo.photo.slug %}">
+                <i class="fa fa-trash float-right"></i>
+            </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan='5'>Your cart is empty</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+            <a class='btn btn-primary float-right' href="{% url 'imageapp:photo-list' %}">Continue shopping</a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if object.coupon %}
+        <tr>
+            <td colspan="4"><b>Coupon</b></td>
+            <td><b>-${{ object.coupon.amount }}</b></td>
+        </tr>
+        {% endif %}
+        {% if object.get_total %}
+        <tr>
+            <td colspan="4"><b>Order Total</b></td>
+            <td><b>${{ object.get_total }}</b></td>
+        </tr>
+        <tr>
+            <td colspan="5">
+            <a class='btn btn-warning float-right ml-2' href='/checkout/'>Proceed to checkout</a>
+            <a class='btn btn-primary float-right' href="{% url 'imageapp:photo-list' %}">Continue shopping</a>
+            </td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    </div>
+
+    </div>
+  </main>
+
+{% endblock content %}
+
+

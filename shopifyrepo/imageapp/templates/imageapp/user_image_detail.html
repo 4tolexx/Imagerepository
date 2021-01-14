@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+        
+<div class="container"> 
+  {% if photos %}
+  <ul class="list-group">
+    {% for photo in photos %}
+    <li class="list-group-item"><a href="{% url 'imageapp:photo-details' photo.slug %}">{{ photo.image }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No images added yet</p>
+  {% endif %}
+</div>
+
+{% endblock %}

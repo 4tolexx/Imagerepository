@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load cart_template_tags %}
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'imageapp/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'imageapp/css/mdb.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'imageapp/css/style.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <script type="text/javascript" src="{% static 'imageapp/js/jquery.slim.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'imageapp/js/bootstrap.min.js' %}"></script>
+    <title>image repository</title>
+</head>
+<body>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <nav class="navbar fixed-top navbar-expand-md navbar-light white scrolling-navbar" style="background-color: #cc4067;">
+      <div class="container">
+  
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="/">
+          <strong class="green-text">imagerepo</strong>
+        </a>
+  
+        <!-- Collapse -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+          <!-- Left -->
+          <ul class="navbar-nav mr-auto">
+             <li class="nav-item active">
+              <a class="nav-link" href="{% url 'imageapp:add-photo' %}">Add image
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'imageapp:photo-list' %}">
+              image list</a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'imageapp:user-image-detail' username=request.user %}">
+                <span class="d-sm-inline-block"> my images </span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+  
+          <!-- Right -->
+          <ul class="navbar-nav nav-flex-icons">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a href="{% url 'imageapp:order-summary' %}" class="nav-link waves-effect">
+                <span class="badge green z-depth-1 mr-1"> {{ request.user|cart_item_count }} </span>
+                <i class="fa fa-shopping-cart"></i>
+                <span class="d-sm-inline-block"> Cart </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
+                <span class="d-sm-inline-block"> Logout </span>
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'account_login' %}">
+                <span class="d-sm-inline-block"> Login </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+                <span class="d-sm-inline-block"> Signup </span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+  
+      </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+
+    {% block extra_scripts %}
+    {% endblock extra_scripts %}
+
+    {% block extra_body %}
+    {% endblock %}
+</body>
+</html>

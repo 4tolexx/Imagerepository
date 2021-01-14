@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class = "content-section container" style="padding-top: 10px;">
+    <form method = "POST">
+        {% csrf_token %}
+        <h4>Are you sure you want to delete the image ?</h4>
+            <p>{{ object.image }}</p>
+        <div class ="form-group">
+            <button class="btn btn-danger" type="submit">confirm</button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock content %}
