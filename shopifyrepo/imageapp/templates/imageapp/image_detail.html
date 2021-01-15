@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% load cropping %}
+
+{% block content %}
+
+<main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <img src="{% cropped_thumbnail photo 'cropping' scale=0.5 %}" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <!--Content-->
+          <div class="p-4">
+
+            <p class="lead">
+              {% if photo.discount_price %}
+              <span class="mr-1">
+                <del>${{ photo.price }}</del>
+              </span>
+              <span>${{ photo.discount_price }}</span>
+              {% else %}
+              <span>${{ photo.price }}</span>
+              {% endif %}
+            </p>
+
+            <p class="lead font-weight-bold">Description</p>
+
+            <p>{{ photo.description }}</p>
+
+            {% comment %} <form class="d-flex justify-content-left">
+              <!-- Default input -->
+              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+              <button class="btn btn-primary btn-md my-0 p" type="submit">
+                Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </button>
+
+            </form> {% endcomment %}
+
+            <div>
+              {% if photo.user == user %}
+              <div>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'imageapp:photo-delete' photo.id %}">delete photo</a>
+              </div>
+            {% endif %}
+              <a href="{{ photo.get_add_to_cart_url }}" class="btn btn-primary btn-sm mt-1 mb-1">
+                Add to cart
+                <i class="fa fa-shopping-cart ml-1"></i>
+              </a>
+            </div>
+          </div>
+          <!--Content-->
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+    </div>
+  </main>
+{% endblock content %}
